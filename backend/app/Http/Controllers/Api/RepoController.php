@@ -8,15 +8,23 @@ use Illuminate\Support\Facades\Http;
 
 class RepoController extends Controller
 {
-    public function index($username)
+    public function index($username, Request $request)
     {
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 10);
+
         $url = "https://api.github.com/users/{$username}/repos";
 
         $response = Http::withHeaders([
             'Accept' => 'application/vnd.github.v3+json',
             // If use token:
             // 'Authorization' => 'token ' . config('services.github.token'),
-        ])->get($url);
+        ])->get($url, [
+            'page' => $page,
+            'per_page' => $perPage,
+            'sort' => 'updated',
+            'direction' => 'desc'
+        ]);
 
         if ($response->status() === 404) {
             return response()->json(['error' => 'User not found'], 404);

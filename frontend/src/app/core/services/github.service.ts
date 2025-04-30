@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { GithubRepo } from 'src/app/shared/models/github-repo.model';
@@ -9,10 +9,16 @@ import { environment } from 'src/environments/environment';
 })
 export class GithubService {
   private baseUrl = environment.apiUrl;
+  private readonly perPage = 10;
+
   constructor(private http: HttpClient) { }
 
-  getUserRepos(username: string): Observable<GithubRepo[]> {
-    return this.http.get<GithubRepo[]>(`${this.baseUrl}/repos/${username}`)
+  getUserRepos(username: string, page: number = 1): Observable<GithubRepo[]> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('per_page', this.perPage.toString());
+
+    return this.http.get<GithubRepo[]>(`${this.baseUrl}/repos/${username}`, { params })
       .pipe(
         catchError(err => {
           let message = 'Unknown error';

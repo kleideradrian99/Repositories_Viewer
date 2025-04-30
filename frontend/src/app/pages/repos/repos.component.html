@@ -40,6 +40,11 @@
   </mat-card>
 </div>
 
+<div *ngIf="loadingMore" class="loading-more">
+  <mat-spinner diameter="40"></mat-spinner>
+  <p>Loading more repositories...</p>
+</div>
+
 <div *ngIf="!loading && !error && filteredRepos.length === 0" class="no-repos">
   <p>No repositories found. Try searching for a different username.</p>
 </div>
