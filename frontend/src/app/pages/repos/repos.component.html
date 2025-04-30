@@ -1,10 +1,10 @@
-<div class="search-container">
+<div class="search-container" [@fadeIn]>
   <form [formGroup]="form" (ngSubmit)="searchRepos()">
     <mat-form-field appearance="outline">
       <mat-label>GitHub Username</mat-label>
       <input matInput formControlName="username" placeholder="Enter GitHub username">
     </mat-form-field>
-    <mat-form-field appearance="outline" *ngIf="languages.length > 0">
+    <mat-form-field appearance="outline" *ngIf="languages.length > 0" [@fadeIn]>
       <mat-label>Filter by Language</mat-label>
       <mat-select formControlName="language">
         <mat-option value="">All Languages</mat-option>
@@ -17,34 +17,32 @@
   </form>
 </div>
 
-<div *ngIf="loading" class="loading">
+<div *ngIf="loading" class="loading" [@fadeInOut]>
   <mat-spinner></mat-spinner>
   <p>Loading repositories...</p>
 </div>
 
-<div *ngIf="error" class="error">
-  {{ error }}
-</div>
-
-<div class="repo-list" *ngIf="!loading && !error && filteredRepos.length > 0">
-  <mat-card *ngFor="let repo of filteredRepos" class="repo-card">
+<div class="repo-list" *ngIf="!loading && filteredRepos.length > 0" [@listAnimation]="filteredRepos">
+  <mat-card *ngFor="let repo of filteredRepos" class="repo-card" [@fadeIn]>
+    <div class="language-indicator" *ngIf="repo.language">
+      {{ repo.language }}
+    </div>
     <mat-card-title>{{ repo.name }}</mat-card-title>
     <mat-card-content>
-      <p>{{ repo.description || 'No description' }}</p>
-      <p><strong>Language:</strong> {{ repo.language || 'Not specified' }}</p>
-      <p><strong>Stars:</strong> {{ repo.stargazers_count }}</p>
+      <p>{{ repo.description || 'No description available' }}</p>
+      <p><strong>⭐ Stars:</strong> {{ repo.stargazers_count }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <a mat-button color="accent" [href]="repo.html_url" target="_blank">View on GitHub</a>
+      <a mat-button [href]="repo.html_url" target="_blank">View on GitHub</a>
     </mat-card-actions>
   </mat-card>
 </div>
 
-<div *ngIf="loadingMore" class="loading-more">
+<div *ngIf="loadingMore" class="loading-more" [@fadeInOut]>
   <mat-spinner diameter="40"></mat-spinner>
   <p>Loading more repositories...</p>
 </div>
 
-<div *ngIf="!loading && !error && filteredRepos.length === 0" class="no-repos">
+<div *ngIf="!loading && filteredRepos.length === 0" class="no-repos" [@fadeInOut]>
   <p>No repositories found. Try searching for a different username.</p>
 </div>

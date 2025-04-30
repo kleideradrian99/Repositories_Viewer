@@ -21,7 +21,7 @@ export class GithubService {
     return this.http.get<GithubRepo[]>(`${this.baseUrl}/repos/${username}`, { params })
       .pipe(
         catchError(err => {
-          let message = 'Unknown error';
+          let message = 'Unknown error, possibly need to check the server';
           if (err.status === 404) message = 'User not found';
           else if (err.error?.message) message = err.error.message;
           else if (err.status >= 500) message = 'Server error';
