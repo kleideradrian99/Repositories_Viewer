@@ -1,0 +1,45 @@
+<div class="search-container">
+  <form [formGroup]="form" (ngSubmit)="searchRepos()">
+    <mat-form-field appearance="outline">
+      <mat-label>GitHub Username</mat-label>
+      <input matInput formControlName="username" placeholder="Enter GitHub username">
+    </mat-form-field>
+    <mat-form-field appearance="outline" *ngIf="languages.length > 0">
+      <mat-label>Filter by Language</mat-label>
+      <mat-select formControlName="language">
+        <mat-option value="">All Languages</mat-option>
+        <mat-option *ngFor="let lang of languages" [value]="lang">{{ lang }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+      Search Repositories
+    </button>
+  </form>
+</div>
+
+<div *ngIf="loading" class="loading">
+  <mat-spinner></mat-spinner>
+  <p>Loading repositories...</p>
+</div>
+
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
+
+<div class="repo-list" *ngIf="!loading && !error && filteredRepos.length > 0">
+  <mat-card *ngFor="let repo of filteredRepos" class="repo-card">
+    <mat-card-title>{{ repo.name }}</mat-card-title>
+    <mat-card-content>
+      <p>{{ repo.description || 'No description' }}</p>
+      <p><strong>Language:</strong> {{ repo.language || 'Not specified' }}</p>
+      <p><strong>Stars:</strong> {{ repo.stargazers_count }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a mat-button color="accent" [href]="repo.html_url" target="_blank">View on GitHub</a>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngIf="!loading && !error && filteredRepos.length === 0" class="no-repos">
+  <p>No repositories found. Try searching for a different username.</p>
+</div>
