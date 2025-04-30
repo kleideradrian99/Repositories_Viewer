@@ -2,7 +2,8 @@
   <form [formGroup]="form" (ngSubmit)="searchRepos()">
     <mat-form-field appearance="outline">
       <mat-label>GitHub Username</mat-label>
-      <input matInput formControlName="username" placeholder="Enter GitHub username">
+      <input matInput formControlName="username" placeholder="Enter GitHub username (e.g., kleideradrian99)">
+      <mat-hint>Try searching for 'kleideradrian99' to see an example</mat-hint>
     </mat-form-field>
     <mat-form-field appearance="outline" *ngIf="languages.length > 0" [@fadeIn]>
       <mat-label>Filter by Language</mat-label>
